@@ -41,8 +41,9 @@ func ExecuteChan(tasks []func() error, E int) error {
 
 	for _, task := range tasks {
 		go func(task func() error) {
-			if task() != nil {
-				c <- task()
+			err := task()
+			if err != nil {
+				c <- err
 			}
 			performed <- true
 		}(task)
